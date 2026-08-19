@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
@@ -23,6 +24,18 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             return
         }
 
-        // Placeholder: Geofence transition handling will be implemented in C3.
+        // C3: Determine the type of geofence transition
+        val geofenceTransition = geofencingEvent.geofenceTransition
+
+        if (geofenceTransition != Geofence.GEOFENCE_TRANSITION_ENTER &&
+            geofenceTransition != Geofence.GEOFENCE_TRANSITION_EXIT) {
+            Log.e(TAG, "Unknown geofence transition type: $geofenceTransition")
+            return
+        }
+
+        // C3: Obtain the triggering geofences from the event
+        val triggeringGeofences = geofencingEvent.triggeringGeofences
+
+        // Placeholder: Triggered transition response will be implemented in C4.
     }
 }
