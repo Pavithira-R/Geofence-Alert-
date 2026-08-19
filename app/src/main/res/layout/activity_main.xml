@@ -24,7 +24,7 @@
         android:id="@+id/geofence_status_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Active Geofence:\n📍 Lat: 37.4220\n📍 Lng: -122.0841\n📍 Radius: 100m"
+        android:text="Active Geofence:\n📍 Lat: 6.9271\n📍 Lng: 79.8612\n📍 Radius: 100m"
         android:textSize="16sp"
         android:gravity="center"
         android:background="#f0f0f0"
