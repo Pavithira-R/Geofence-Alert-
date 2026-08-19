@@ -22,5 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GeoFenceAlert"
+rootProject.name = "Geofence Alert"
 include(":app")
+ 
