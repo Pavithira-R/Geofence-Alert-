@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 
@@ -36,6 +37,13 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         // C3: Obtain the triggering geofences from the event
         val triggeringGeofences = geofencingEvent.triggeringGeofences
 
-        // Placeholder: Triggered transition response will be implemented in C4.
+        // C4: Show a Toast notification for the geofence transition
+        val message = when (geofenceTransition) {
+            Geofence.GEOFENCE_TRANSITION_ENTER -> "Entered Geofence!"
+            Geofence.GEOFENCE_TRANSITION_EXIT -> "Exited Geofence!"
+            else -> return
+        }
+
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
