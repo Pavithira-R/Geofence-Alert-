@@ -44,8 +44,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.activity.ktx)
 
-    // ⭐ GOOGLE PLAY SERVICES LOCATION (for Geofencing) ⭐
-    implementation(libs.play.location)
+    // GOOGLE PLAY SERVICES LOCATION (for Geofencing)
+    implementation(libs.play.services.location)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
