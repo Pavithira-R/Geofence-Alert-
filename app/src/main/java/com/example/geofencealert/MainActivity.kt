@@ -1,6 +1,10 @@
 package com.example.geofencealert
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Button
@@ -22,6 +26,22 @@ class MainActivity : AppCompatActivity() {
 
     // Geofencing Client (for Member B to use)
     private lateinit var geofencingClient: GeofencingClient
+
+    // C5: Receiver that listens for geofence event broadcasts from GeofenceBroadcastReceiver
+    private val geofenceEventReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val logEntry = intent.getStringExtra(GeofenceBroadcastReceiver.EXTRA_EVENT_MESSAGE)
+                ?: return
+            // Prepend the new entry so the latest event appears at the top
+            val currentLog = eventLogText.text.toString()
+            val updatedLog = if (currentLog == "📋 Events will appear here...") {
+                logEntry
+            } else {
+                "$logEntry\n$currentLog"
+            }
+            eventLogText.text = updatedLog
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +66,19 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Stop Geofence Button Clicked!", Toast.LENGTH_SHORT).show()
             eventLogText.text = "🛑 Stop button clicked - geofence will be removed"
         }
+    }
+
+    // C5: Register receiver when Activity is active
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter(GeofenceBroadcastReceiver.ACTION_GEOFENCE_EVENT)
+        registerReceiver(geofenceEventReceiver, filter)
+    }
+
+    // C5: Unregister receiver when Activity is paused to avoid leaks
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(geofenceEventReceiver)
     }
 
     // ⭐⭐⭐ YOUR MAIN JOB: PERMISSION HANDLING ⭐⭐⭐

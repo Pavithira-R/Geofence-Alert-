@@ -7,11 +7,16 @@ import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
     companion object {
         private const val TAG = "GeofenceReceiver"
+        const val ACTION_GEOFENCE_EVENT = "com.example.geofencealert.GEOFENCE_EVENT"
+        const val EXTRA_EVENT_MESSAGE = "event_message"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -45,5 +50,14 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         }
 
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
+        // C5: Build a timestamped entry and broadcast it to MainActivity
+        val timestamp = SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())
+        val logEntry = "[$timestamp] $message"
+
+        val eventIntent = Intent(ACTION_GEOFENCE_EVENT).apply {
+            putExtra(EXTRA_EVENT_MESSAGE, logEntry)
+        }
+        context.sendBroadcast(eventIntent)
     }
 }
