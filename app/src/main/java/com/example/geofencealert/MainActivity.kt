@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     // Geofencing Client (for Member B to use)
     private lateinit var geofencingClient: GeofencingClient
+    private lateinit var geofenceHelper: GeofenceHelper
 
     // C5: Receiver that listens for geofence event broadcasts from GeofenceBroadcastReceiver
     private val geofenceEventReceiver = object : BroadcastReceiver() {
@@ -55,16 +56,22 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize Geofencing Client (Member B will use this)
         geofencingClient = LocationServices.getGeofencingClient(this)
+        geofenceHelper = GeofenceHelper(this)
 
         // Set Click Listeners
         startGeofenceButton.setOnClickListener {
             Toast.makeText(this, "Start Geofence Button Clicked!", Toast.LENGTH_SHORT).show()
-            checkAndRequestPermissions()
+            if (checkAndRequestPermissions()) {
+                geofenceHelper.registerGeofence()
+                geofenceStatusText.text = "✅ Geofence ACTIVE\n📍 Lat: 6.9271\n📍 Lng: 79.8612\n📍 Radius: 100m"
+            }
         }
 
         stopGeofenceButton.setOnClickListener {
             Toast.makeText(this, "Stop Geofence Button Clicked!", Toast.LENGTH_SHORT).show()
-            eventLogText.text = "🛑 Stop button clicked - geofence will be removed"
+            geofenceHelper.removeGeofence()
+            geofenceStatusText.text = "🛑 Geofence REMOVED\n📍 Lat: 6.9271\n📍 Lng: 79.8612\n📍 Radius: 100m"
+            eventLogText.text = "🛑 Geofence has been deactivated."
         }
     }
 
